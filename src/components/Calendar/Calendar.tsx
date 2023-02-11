@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import dayjs, {Dayjs} from "dayjs";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 import {Badge, BadgeProps, Calendar as CalendarUI} from "antd";
 import {StoreType} from "../../redux/reducer.typing";
@@ -11,7 +11,6 @@ const Calendar = () => {
     const [value, setValue] = useState(() => dayjs(new Date()));
 
     const eventsList = useSelector((store: StoreType) => store.events)
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const onSelect = (newValue: Dayjs) => {
         setValue(newValue);
