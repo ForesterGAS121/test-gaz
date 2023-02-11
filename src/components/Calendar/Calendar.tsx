@@ -43,10 +43,10 @@ const Calendar = () => {
         const listData = getListData(value);
         return (
             <ul className={styles.events} onClick={() => {
-                navigate(`/:${value.format('YYYY-MM-DD')}`)
+                navigate(`/${value.format('YYYY-MM-DD')}`)
             }}>
                 {listData.map((item) => (
-                    <li key={item.id}>
+                    <li key={item.title}>
                         <Badge status={item.type as BadgeProps['status']} text={item.title}/>
                     </li>
                 ))}
@@ -55,6 +55,7 @@ const Calendar = () => {
     };
     return (
         <>
+
             <CalendarUI value={value} onSelect={onSelect} onPanelChange={onPanelChange} dateCellRender={dateCellRender}
                         monthCellRender={monthCellRender}/>
         </>

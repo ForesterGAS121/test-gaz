@@ -7,7 +7,6 @@ export enum EnumAction {
 }
 
 export type EventType = {
-    id: string
     title: string,
     start: Dayjs,
     end: Dayjs,
