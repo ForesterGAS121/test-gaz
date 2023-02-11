@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import dayjs, {Dayjs} from "dayjs";
 import {useSelector} from "react-redux";
-
 import {Badge, BadgeProps, Calendar as CalendarUI} from "antd";
 import {StoreType} from "../../redux/reducer.typing";
 import styles from './Calendar.module.css'
@@ -47,7 +46,7 @@ const Calendar = () => {
                 navigate(`/:${value.format('YYYY-MM-DD')}`)
             }}>
                 {listData.map((item) => (
-                    <li key={item.title}>
+                    <li key={item.id}>
                         <Badge status={item.type as BadgeProps['status']} text={item.title}/>
                     </li>
                 ))}
