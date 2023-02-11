@@ -1,18 +1,19 @@
 import React, {useState} from 'react';
 import dayjs, {Dayjs} from "dayjs";
-import {useDispatch, useSelector} from "react-redux";
-
-import {Alert, Badge, BadgeProps, Calendar as CalendarUI} from "antd";
+import {useSelector} from "react-redux";
+import {Badge, BadgeProps, Calendar as CalendarUI} from "antd";
 import {StoreType} from "../../redux/reducer.typing";
+import styles from './Calendar.module.css'
+import {useNavigate} from "react-router";
 
 const Calendar = () => {
     const [value, setValue] = useState(() => dayjs(new Date()));
-    const [selectedValue, setSelectedValue] = useState(() => dayjs(new Date()));
+
     const eventsList = useSelector((store: StoreType) => store.events)
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const onSelect = (newValue: Dayjs) => {
         setValue(newValue);
-        setSelectedValue(newValue);
+
     };
 
     const onPanelChange = (newValue: Dayjs) => {
@@ -23,7 +24,6 @@ const Calendar = () => {
 
         return eventsList[value.format('YYYY-MM-DD')] || [];
     };
-
     const getMonthData = (value: Dayjs) => {
         if (value.month() === 8) {
             return 1394;
@@ -39,13 +39,14 @@ const Calendar = () => {
             </div>
         ) : null;
     };
-
     const dateCellRender = (value: Dayjs) => {
         const listData = getListData(value);
         return (
-            <ul className="events">
+            <ul className={styles.events} onClick={() => {
+                navigate(`/:${value.format('YYYY-MM-DD')}`)
+            }}>
                 {listData.map((item) => (
-                    <li key={item.title}>
+                    <li key={item.id}>
                         <Badge status={item.type as BadgeProps['status']} text={item.title}/>
                     </li>
                 ))}
@@ -54,7 +55,6 @@ const Calendar = () => {
     };
     return (
         <>
-            <Alert message={`You selected date: ${selectedValue?.format('YYYY-MM-DD')}`}/>
             <CalendarUI value={value} onSelect={onSelect} onPanelChange={onPanelChange} dateCellRender={dateCellRender}
                         monthCellRender={monthCellRender}/>
         </>
