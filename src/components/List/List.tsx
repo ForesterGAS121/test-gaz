@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Drawer, Empty, List as ListUI,} from 'antd'
+import {Button, Drawer, Empty, List as ListUI, message,} from 'antd'
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router";
 import {EventType, StoreType} from "../../redux/reducer.typing";
@@ -14,7 +14,15 @@ const List = () => {
     const dispatch = useDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState<EventType | undefined>()
+    const [messageApi, contextHolder] = message.useMessage();
 
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: selectedEvent ? 'Событие обновленно' : 'Событие добавленно',
+            duration: 3,
+        });
+    };
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -24,11 +32,13 @@ const List = () => {
         dispatch(addEvent(values))
         setIsModalOpen(false);
         setSelectedEvent(undefined)
+        success()
     };
     const handleUpdateEvent = (values: any) => {
         dispatch(updateEvent(values))
         setIsModalOpen(false)
         setSelectedEvent(undefined)
+        success()
     }
 
     const handleCancel = () => {
@@ -39,10 +49,12 @@ const List = () => {
         setSelectedEvent(event)
         setIsModalOpen(true)
     }
+
     return (
         <div className={styles.container}>
+            {contextHolder}
             <ListUI
-                header={<div><Button onClick={showModal} type="primary">+ New Event</Button></div>}
+                header={<div><Button onClick={showModal} type="primary">+ Новое событие</Button></div>}
                 bordered
                 dataSource={list ? list.sort((a, b) => a.start.unix() - b.start.unix()) : []}
                 locale={{emptyText: <Empty description={'Нет событий'}/>}}
@@ -51,6 +63,7 @@ const List = () => {
                 )}
             />
             <Drawer
+                size={'large'}
                 title={selectedEvent ? 'Редактирование' : 'Добавление'}
                 placement={'right'}
                 closable={false}
