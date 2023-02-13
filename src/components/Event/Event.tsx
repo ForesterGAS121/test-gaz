@@ -20,13 +20,13 @@ const Event: React.FC<EventProps> = ({item, onClick}) => {
             <Button type={'link'} onClick={onClick} className={styles.button}>Редактировать</Button>
             <Popconfirm
                 className={styles.button}
-                title="Delete the task"
-                description="Are you sure to delete this task?"
-                okText="Yes"
-                cancelText="No"
+                title="Удалить задачу"
+                description="Вы уверены, что хотите удалить задачу?"
+                okText="Да"
+                cancelText="Нет"
                 onConfirm={() => dispatch(removeEvent(item))}
             >
-                <a href="#">Delete</a>
+                <a href="#">Удалить</a>
             </Popconfirm>
         </ListUI.Item>
     );

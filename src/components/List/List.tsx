@@ -21,7 +21,6 @@ const List = () => {
     };
 
     const handleAddEvent = (values: any) => {
-
         dispatch(addEvent(values))
         setIsModalOpen(false);
         setSelectedEvent(undefined)
@@ -45,7 +44,7 @@ const List = () => {
             <ListUI
                 header={<div><Button onClick={showModal} type="primary">+ New Event</Button></div>}
                 bordered
-                dataSource={list || []}
+                dataSource={list ? list.sort((a, b) => a.start.unix() - b.start.unix()) : []}
                 locale={{emptyText: <Empty description={'Нет событий'}/>}}
                 renderItem={(item) => (
                     <Event item={item} onClick={handleChange(item)}/>
@@ -58,7 +57,8 @@ const List = () => {
                 onClose={handleCancel}
                 open={isModalOpen}
             >
-                <Form onSubmit={selectedEvent ? handleUpdateEvent : handleAddEvent} item={selectedEvent}/>
+                <Form onSubmit={selectedEvent ? handleUpdateEvent : handleAddEvent} item={selectedEvent}
+                      day={day || ''}/>
             </Drawer>
         </div>
     );
