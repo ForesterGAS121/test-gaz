@@ -1,0 +1,9 @@
+.container {
+    max-width: 1280px;
+}
+
+.button {
+    border: none;
+    box-shadow: none;
+    font-weight: bold;
+}
