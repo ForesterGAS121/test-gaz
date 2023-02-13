@@ -8,7 +8,6 @@ import {useNavigate} from "react-router";
 
 const Calendar = () => {
     const [value, setValue] = useState(() => dayjs(new Date()));
-
     const eventsList = useSelector((store: StoreType) => store.events)
     const navigate = useNavigate()
     const onSelect = (newValue: Dayjs) => {
@@ -19,26 +18,8 @@ const Calendar = () => {
     const onPanelChange = (newValue: Dayjs) => {
         setValue(newValue);
     };
-    const getListData = (value: Dayjs) => {
+    const getListData = (value: Dayjs) => eventsList[value.format('YYYY-MM-DD')] || [];
 
-
-        return eventsList[value.format('YYYY-MM-DD')] || [];
-    };
-    const getMonthData = (value: Dayjs) => {
-        if (value.month() === 8) {
-            return 1394;
-        }
-    };
-
-    const monthCellRender = (value: Dayjs) => {
-        const num = getMonthData(value);
-        return num ? (
-            <div className="notes-month">
-                <section>{num}</section>
-                <span>Backlog number</span>
-            </div>
-        ) : null;
-    };
     const dateCellRender = (value: Dayjs) => {
         const listData = getListData(value);
         return (
@@ -54,12 +35,7 @@ const Calendar = () => {
         );
     };
     return (
-        <>
-
-            <CalendarUI value={value} onSelect={onSelect} onPanelChange={onPanelChange} dateCellRender={dateCellRender}
-                        monthCellRender={monthCellRender}/>
-        </>
-    );
+        <CalendarUI value={value} onSelect={onSelect} onPanelChange={onPanelChange} dateCellRender={dateCellRender}/>);
 };
 
 export default Calendar;

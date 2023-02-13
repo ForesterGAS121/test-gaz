@@ -1,41 +1,13 @@
 import {ActionsAddEvent, EnumAction, StoreType} from "./reducer.typing";
-import dayjs from "dayjs";
 
 const initialStore: StoreType = {
-    events: {
-        '2023-02-13': [{
-            start: dayjs(new Date()),
-            type: 'success',
-            end: dayjs(new Date()),
-            notification: dayjs(new Date()),
-
-            title: 'Event 1'
-        },
-            {
-                start: dayjs(new Date()),
-                type: 'success',
-                end: dayjs(new Date()),
-                notification: dayjs(new Date()),
-
-                title: 'Event 2'
-            }, {
-                start: dayjs(new Date()),
-                type: 'success',
-                end: dayjs(new Date()),
-                notification: dayjs(new Date()),
-
-                title: 'Event 3'
-            }
-        ]
-    }
+    events: {}
 }
 const reducer = (store = initialStore, action: ActionsAddEvent) => {
 
     switch (action.type) {
         case EnumAction.addEvent: {
             const date = action.payload.start.format('YYYY-MM-DD')
-            console.log('reducer')
-            console.log(store)
             return {...store, events: {...store.events, [date]: [...(store.events[date] || []), action.payload]}}
         }
         case EnumAction.removeEvent: {
