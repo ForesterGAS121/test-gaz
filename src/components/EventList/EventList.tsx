@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { Button, Drawer, Empty, List as ListUI, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { EventType, StoreType } from '../../redux/reducer.typing';
 
 import { addEvent, removeEvent, updateEvent } from '../../redux/actions';
@@ -10,9 +10,9 @@ import Form from '../Form';
 import dayjs from 'dayjs';
 
 const EventList = () => {
+  const navigate = useNavigate();
   const { day } = useParams();
   const regExDate = /^\d{4}-\d{2}-\d{2}$/;
-  if (!day?.match(regExDate)) throw new Error();
   const list = useSelector((store: StoreType) => store.events[day || '']);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +26,11 @@ const EventList = () => {
       duration: 3,
     });
   };
-
+  useLayoutEffect(() => {
+    if (!day?.match(regExDate)) {
+      navigate('/error');
+    }
+  }, []);
   const toggleModal = () => setIsModalOpen((prev) => !prev);
 
   const handleAddEvent = (values: EventType) => {
